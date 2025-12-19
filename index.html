@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<title>ใครขโมยแฟ้ม</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;700&display=swap" rel="stylesheet">
+
+<style>
+*{
+  box-sizing:border-box;
+  font-family:'Noto Sans Thai', sans-serif;
+  color:#b11226;
+  font-weight:700;
+}
+
+body{
+  margin:0;
+  background:#f7f7f7;
+}
+
+.page{
+  display:none;
+  min-height:100vh;
+  padding:60px;
+  border:14px solid #ffffff;
+  background:#f7f7f7;
+}
+
+.page.active{
+  display:block;
+}
+
+.title{
+  font-size:72px;
+  text-align:center;
+  margin-top:120px;
+}
+
+.story{
+  font-size:32px;
+  line-height:1.9;
+  max-width:900px;
+  margin:60px auto;
+}
+
+.choice{
+  text-align:center;
+}
+
+button, select, input{
+  font-size:30px;
+  padding:20px 40px;
+  margin:20px;
+  border:8px solid #ffffff;
+  background:#ffffff;
+  cursor:pointer;
+}
+
+select{
+  width:100%;
+  max-width:420px;
+}
+
+img{
+  max-width:100%;
+  border:8px solid #ffffff;
+}
+</style>
+</head>
+
+<body>
+
+<audio id="bgm" loop>
+  <source src="music.mp4" type="audio/mpeg">
+</audio>
+
+<!-- start -->
+<div id="start" class="page active">
+  <div class="title" id="type1"></div>
+  <div class="choice">
+    <button onclick="go('intro')">เริ่มต้น</button>
+  </div>
+</div>
+
+<!-- intro -->
+<div id="intro" class="page">
+  <div class="story" id="type2"></div>
+  <div class="choice">
+    <button onclick="go('intro2')">ต่อไป</button>
+  </div>
+</div>
+
+<!-- intro2 -->
+<div id="intro2" class="page">
+  <div class="story" id="type3"></div>
+  <input id="nameInput" placeholder="ใส่ชื่อของคุณ">
+  <div class="choice">
+    <button onclick="saveName()">ไปต่อ</button>
+  </div>
+</div>
+
+<!-- path -->
+<div id="path" class="page">
+  <div class="story">คุณจะเลือกทำอย่างไร</div>
+  <div class="choice">
+    <button onclick="go('quiz')">ไปรวมตัวกับทุกคน</button>
+    <button onclick="go('quiz')">แยกออกไปตามหาคนเดียว</button>
+  </div>
+</div>
+
+<!-- quiz -->
+<div id="quiz" class="page">
+  <div class="story">คุณต้องเลือกที่ไปของคุณ</div>
+  <div class="choice">
+    <button onclick="go('meeting')">ห้องประชุมใหญ่ชั้น 2</button>
+    <button onclick="go('studio')">Studio</button>
+    <button onclick="go('cafe')">Cafe</button>
+    <button onclick="go('cos')">ฝ่ายติดต่อลูกค้า</button>
+    <button onclick="go('storage')">ห้องเก็บอุปกรณ์</button>
+  </div>
+</div>
+
+<!-- meeting -->
+<div id="meeting" class="page">
+  <div class="story">คุณสังเกตเห็นหลายอย่างในห้องประชุม</div>
+  <div class="choice">
+    <button onclick="go('meeting2')">ดูรายชื่อคนใช้ห้องล่าสุด</button>
+    <button onclick="go('quiz')">ออกจากห้อง</button>
+  </div>
+</div>
+
+<div id="meeting2" class="page">
+  <div class="story">
+    ผู้ใช้ห้องล่าสุดคือ  
+    ฝ่ายบัญชี / การตลาด / ประชาสัมพันธ์
+  </div>
+  <div class="choice">
+    <button onclick="go('last')">ไปต่อ</button>
+  </div>
+</div>
+
+<!-- last -->
+<div id="last" class="page">
+  <div class="story">เลือกเป้าหมายที่จะไปต่อ</div>
+  <div class="choice">
+    <select onchange="go(this.value)">
+      <option value="" disabled selected>เลือกสถานที่</option>
+      <option value="quiz">Studio</option>
+      <option value="quiz">Cafe</option>
+      <option value="quiz">ฝ่ายติดต่อลูกค้า</option>
+      <option value="quiz">ห้องเก็บอุปกรณ์</option>
+      <option value="who">กลับไปถามฝ่าย PR</option>
+    </select>
+  </div>
+</div>
+
+<!-- who -->
+<div id="who" class="page">
+  <div class="story">ใครกันแน่ที่เกี่ยวข้อง</div>
+
+  <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:30px">
+
+    <div onclick="go('end')">
+      <img src="tod.jpg">
+      <p class="story">พนักงานฝ่าย PR</p>
+    </div>
+
+    <div onclick="go('again')">
+      <img src="jan.jpg">
+      <p class="story">พนักงานคาเฟ่</p>
+    </div>
+
+    <div onclick="go('again')">
+      <img src="someone.jpg">
+      <p class="story">ฝ่ายติดต่อลูกค้า</p>
+    </div>
+
+    <div onclick="go('again')">
+      <img src="28.jpg">
+      <p class="story">ประธาน</p>
+    </div>
+
+  </div>
+</div>
+
+<!-- again -->
+<div id="again" class="page">
+  <div class="story">เหมือนจะไม่ใช่…</div>
+  <div class="choice">
+    <button onclick="go('last')">ลองใหม่</button>
+    <button onclick="lock()">พอแล้ว เหนื่อย</button>
+  </div>
+</div>
+
+<!-- end -->
+<div id="end" class="page">
+  <div class="story">
+    คุณพบแฟ้มได้ทันเวลา  
+    และรู้ว่าพนักงานฝ่าย PR หยิบแฟ้มผิดไปโดยไม่ได้ตั้งใจ  
+
+    <br><br>จบ
+  </div>
+</div>
+
+<script>
+let name = '';
+
+function go(id){
+  if(!id) return;
+
+  document.querySelectorAll('.page').forEach(p=>{
+    p.classList.remove('active');
+  });
+
+  const target = document.getElementById(id);
+  if(target) target.classList.add('active');
+}
+
+function saveName(){
+  name = document.getElementById('nameInput').value;
+  go('path');
+}
+
+function lock(){
+  document.body.innerHTML =
+  '<h1 style="text-align:center;margin-top:40vh;color:#b11226;font-size:48px">เกมจบแล้ว</h1>';
+}
+
+const bgm = document.getElementById('bgm');
+document.addEventListener('click',()=>{
+  if(bgm.paused) bgm.play();
+},{once:true});
+
+function typeText(id,text){
+  let i=0;
+  const el=document.getElementById(id);
+  el.innerHTML='';
+  const timer=setInterval(()=>{
+    el.innerHTML+=text[i];
+    i++;
+    if(i>=text.length) clearInterval(timer);
+  },80);
+}
+
+typeText('type1','ใครขโมยแฟ้ม');
+typeText('type2','คืนวันที่ 18 ธันวาคม แฟ้มงานสำคัญได้หายไปจากบริษัท...');
+typeText('type3','ถ้าไม่เจอก่อนเที่ยงคืน ทุกอย่างจะสายเกินไป');
+</script>
+
+</body>
+</html>
